@@ -1,12 +1,32 @@
-# Ticket Flow Agent Setup
+# Ticket Flow Agent
 
 This repository contains the Ticket Flow agent workflow configurations, rules, scripts, and documentation. It is designed to establish a repeatable, high-discipline workflow for Cursor (and other agentic IDEs) inside your development team.
+
+## Overview
+
+**Ticket Flow** is a thin orchestration layer, not a product. It sequences *how* work moves from ticket ID → merged change with human gates at the right moments.
+
+```text
+User phrase  →  rule loads skill  →  scripts + product repos  →  Confirm  →  commit/PR  →  ask before chat
+```
+
+### Why use a structured workflow?
+
+Ad-hoc chat ("plan then build ticket X") often burns retries: wrong branch, forgotten tests, premature commit, or Slack spam. A Ticket Flow skill front-loads the path once, reducing loops and tokens.
+
+#### Ad-Hoc Agent Chat vs. Ticket Flow Cost
+![Ad-hoc agent chat vs ticket-flow cost](docs/assets/agent-chat-vs-ticket-flow-cost.png)
+
+#### Day-to-Day Agent Shape with Checklist
+![Ticket flow agent — easy path](docs/assets/ticket-flow-agent-easy.png)
+
+---
 
 ## Directory Structure
 
 ```text
 ticket-flow/
-├── README.md                   # Setup and operations guide (this file)
+├── README.md                   # Setup, overview and diagrams (this file)
 ├── .gitignore                  # Local progress tracker gitignore
 ├── .cursor/
 │   ├── skills/
@@ -16,7 +36,7 @@ ticket-flow/
 │       ├── ticket-flow.mdc     # Rule that triggers the Ticket Flow skill
 │       └── ticket-handoff.mdc  # Standard format for ticket handoff and tests
 ├── docs/
-│   ├── ticket-flow-agent-guide.md   # The fast-track guide for developers
+│   ├── ticket-flow-agent-guide.md   # Detailed team developer guide
 │   ├── progress-template.md         # Template for morning multi-ticket queues
 │   └── assets/                      # Guide diagrams and visual assets
 └── scripts/                         # Wrapper scripts forwarding to your CLI tools
