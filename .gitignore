@@ -1,0 +1,9 @@
+# Local progress tracker
+.local/
+
+# OS metadata
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log
