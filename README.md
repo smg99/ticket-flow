@@ -2,6 +2,8 @@
 
 This repository contains the Ticket Flow agent workflow configurations, rules, scripts, and documentation. It is designed to establish a repeatable, high-discipline workflow for Cursor (and other agentic IDEs) inside your development team.
 
+**Companion SDLC method:** [AI-Assisted SDLC Playbook](https://smg99.github.io/engineering-ai-playbook/) — stage prompts and human gates from vague requirements through release ([Develop one story](https://smg99.github.io/engineering-ai-playbook/#stage/develop), [review markdown before tickets](https://smg99.github.io/engineering-ai-playbook/#guide-review-md)). This repo does not replace that playbook; it sequences *how* an IDE agent runs once a real ticket exists.
+
 ## Overview
 
 **Ticket Flow** is a thin orchestration layer, not a product. It sequences *how* work moves from ticket ID → merged change with human gates at the right moments.

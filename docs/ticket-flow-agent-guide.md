@@ -20,6 +20,8 @@ Share this with other eng teams that want the same discipline in their own repos
 
 You keep product standards in each app’s own rules. Ticket Flow only sequences *how* work moves from ticket ID → merged change.
 
+For stage prompts before and around development (vague requirements → MD review → stories → develop → verify → QA → release), use the companion [AI-Assisted SDLC Playbook](https://smg99.github.io/engineering-ai-playbook/) — especially [Develop one story](https://smg99.github.io/engineering-ai-playbook/#stage/develop) and [review markdown before tickets](https://smg99.github.io/engineering-ai-playbook/#guide-review-md).
+
 ```text
 User phrase  →  rule loads skill  →  scripts + product repos  →  Confirm  →  commit/PR  →  ask before chat
 ```
