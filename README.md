@@ -56,8 +56,8 @@ ticket-flow/
 
 ## Discoverability
 
-- Site: [index.html](https://smg99.github.io/ticket-flow/)
-- AI context: [llms.txt](https://smg99.github.io/ticket-flow/llms.txt)
+- Site: [index.html](https://smg99.github.io/ticket-flow/) · [start/](https://smg99.github.io/ticket-flow/start/) · [guides/](https://smg99.github.io/ticket-flow/guides/)
+- AI context: [llm.txt](https://smg99.github.io/ticket-flow/llm.txt) · [llms.txt](https://smg99.github.io/ticket-flow/llms.txt) · [llms-full.txt](https://smg99.github.io/ticket-flow/llms-full.txt)
 - Crawlers: [robots.txt](https://smg99.github.io/ticket-flow/robots.txt) · [sitemap.xml](https://smg99.github.io/ticket-flow/sitemap.xml)
 
 ## Hosting

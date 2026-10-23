@@ -1,0 +1,78 @@
+# Ticket Flow — full agent context
+
+Source of truth for humans: https://smg99.github.io/ticket-flow/
+Machine signposts: /llm.txt · /llms.txt · this file
+Repository: https://github.com/smg99/ticket-flow
+Companion playbook: https://smg99.github.io/engineering-ai-playbook/
+
+## Definition
+
+Ticket Flow is a free, public, thin orchestration layer for IDE agents (especially Cursor). It sequences work after a real ticket ID exists: fetch the issue, create a scoped branch, implement with tests, stop for human Confirm before commit, stop again before push/PR, then optionally ask before chat notify. It ships as a skill, always-applied rules, and thin shell wrappers—not as a SaaS product. The public website only displays guidance; it never fetches tickets, runs agents, commits code, or posts to chat.
+
+## Not this
+
+- Not a replacement for the AI-Assisted SDLC Playbook (use the playbook for vague requirements → stories)
+- Not automatic Jira/Linear/GitHub ticket creation
+- Not a hosted runner that opens PRs for you
+- Not permission to paste proprietary code or secrets into public chat or this repo
+
+## When to use it
+
+1. Stories already exist as real tickets in your tracker.
+2. You are in an agentic IDE with the product repo (and optionally this skill) available.
+3. Pair with playbook stage “Develop one story” for planning prompts; use Ticket Flow for the ticket → PR sequence and gates.
+
+## Hard rules (must not deviate)
+
+1. Confirm before every commit and before every PR. Silence is not Confirm.
+2. Never mention AI, Cursor, or agents in commits, PR titles, or descriptions.
+3. Stage only ticket-relevant files (path-scoped; no git add -A).
+4. Reproduce UI bugs in the running app before calling the fix done.
+5. Prefer root-cause fixes; assert failure modes in tests.
+6. Tests ship with the change unless the user explicitly waives them.
+7. Ask before chat notify; never invent a default channel.
+8. Never force-push protected defaults (main/master); never push secrets.
+9. On script failure: report the error—do not invent workarounds or fake success.
+
+## Flow steps
+
+1. Queue & progress — `.local/progress.md` from docs/progress-template.md
+2. Fetch issue — `./scripts/issue-get.sh` (must be configured; no invented ticket text)
+3. Branch — `bugfix/ID` or `feature/ID` via `./scripts/git-branch.sh`
+4. Implement & test — project rules; UI reproduce when needed
+5. Confirm before commit — Impact Area summary; wait for explicit Confirm
+6. Stage & commit — `./scripts/git-commit.sh "ID: why-message"`
+7. Confirm before PR — title + Impact Area body + test plan
+8. Push & PR — `./scripts/git-push.sh` then `./scripts/git-pr.sh`
+9. Ask before chat — Yes/No + channel; `./scripts/notify-chat.sh` only if configured
+10. Close out — mark Done; optional consumer package bump with the same gates
+
+## Impact Area template
+
+- App
+- Surfaces
+- Components / APIs
+- Regression Risk
+- Tests
+
+## Naming glossary
+
+- Primary app — main product repo only
+- Product suite — primary app + sibling product repos
+- Suite + shared UI — those products plus the shared UI package (shared UI is neither “the app” nor “the suite”)
+
+## Security boundary
+
+Public site and repo: generic guidance and synthetic examples only. Real tickets, code, credentials, and client operational data stay in approved private systems.
+
+## Docs map
+
+- docs/ticket-flow-agent-guide.md — full team guide
+- docs/progress-template.md — local queue template
+- docs/CONTRIBUTING.md — how to extend
+- .cursor/skills/ticket-flow/SKILL.md — agent checklist
+- assets/flow-data.js — site step copy (keep aligned with the skill)
+
+## How to cite
+
+Ticket Flow — https://smg99.github.io/ticket-flow/

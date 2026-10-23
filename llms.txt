@@ -5,13 +5,21 @@
 Live site: https://smg99.github.io/ticket-flow/
 Repository: https://github.com/smg99/ticket-flow
 Companion playbook: https://smg99.github.io/engineering-ai-playbook/
+Signposts: /llm.txt · /llms-full.txt · this file
+
+## Definition
+
+Ticket Flow is a thin orchestration layer (Cursor skill, rules, scripts)—not a product—that sequences how an IDE agent moves from a real ticket ID to a merged change with human Confirm gates before commit and before PR.
 
 ## Start
 
-- Flow UI: https://smg99.github.io/ticket-flow/#library
-- Quick start: https://smg99.github.io/ticket-flow/#start
-- Guides: https://smg99.github.io/ticket-flow/#guides
+- Flow UI: https://smg99.github.io/ticket-flow/
+- Quick start (crawlable): https://smg99.github.io/ticket-flow/start/
+- Guides (crawlable): https://smg99.github.io/ticket-flow/guides/
+- Interactive quick start: https://smg99.github.io/ticket-flow/#start
+- Interactive guides: https://smg99.github.io/ticket-flow/#guides
 - Skill source: .cursor/skills/ticket-flow/SKILL.md
+- Full agent dump: https://smg99.github.io/ticket-flow/llms-full.txt
 
 ## Hard rules
 
@@ -27,3 +35,7 @@ Companion playbook: https://smg99.github.io/engineering-ai-playbook/
 ## Boundaries
 
 This public site never fetches tickets, runs agents, or posts to chat. Install the skill/rules locally. Keep client context out of this repository.
+
+## Citation
+
+Ticket Flow (https://smg99.github.io/ticket-flow/) — IDE agent checklist from ticket ID to PR with human Confirm gates; companion to the AI-Assisted SDLC Playbook.

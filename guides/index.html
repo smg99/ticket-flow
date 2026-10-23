@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guides &amp; FAQ | Ticket Flow</title>
+<meta name="description" content="Ticket Flow guides: what it is, how it pairs with the AI-Assisted SDLC Playbook, script failure rules, Impact Area, Confirm gates, and FAQ for Cursor agent ticket-to-PR workflows.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://smg99.github.io/ticket-flow/guides/">
+<link rel="alternate" type="text/plain" href="https://smg99.github.io/ticket-flow/llms.txt" title="llms.txt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Guides &amp; FAQ | Ticket Flow">
+<meta property="og:description" content="Definitions, playbook bridge, scripts, security boundaries, and FAQ for Ticket Flow.">
+<meta property="og:url" content="https://smg99.github.io/ticket-flow/guides/">
+<meta property="og:image" content="https://smg99.github.io/ticket-flow/assets/og-cover.png">
+<link rel="stylesheet" href="../assets/styles.css?v=tf2">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Ticket Flow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ticket Flow is a thin orchestration layer—Cursor skill, always-applied rules, and thin script wrappers—that sequences how an IDE agent moves from a real ticket ID to a merged change with human Confirm gates before commit and before pull request. It is not a SaaS product and does not replace your tracker or code host."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Ticket Flow relate to the AI-Assisted SDLC Playbook?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The AI-Assisted SDLC Playbook covers vague requirements through release with stage prompts and gates. Ticket Flow starts after a real ticket exists and sequences IDE agent work during Develop one story: fetch, branch, implement, test, Confirm, commit, Confirm, PR, ask before chat."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the Ticket Flow website create pull requests?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The public site only displays guidance and copyable prompts. Pull requests are created in your local clone via configured scripts and your code host after explicit human Confirm."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are there two Confirm gates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One gate before commit shows the diff summary and Impact Area. A second gate before push/PR shows the proposed title and body. Silence never counts as Confirm."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is an Impact Area in Ticket Flow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Impact Area is a pasteable handoff block listing App, Surfaces, Components or APIs, Regression Risk, and Tests. It appears at validation gates and in pull request descriptions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Ticket Flow invent ticket descriptions if the tracker is not configured?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. issue-get.sh must exit with an error until wired to your tracker CLI. Agents must not invent ticket content."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <a class="brand" href="../">Ticket Flow</a>
+  <nav aria-label="Main navigation">
+    <a href="../">Flow</a>
+    <a href="../start/">Quick start</a>
+    <a href="./" aria-current="page">Guides</a>
+  </nav>
+  <span class="header-note">Ticket → Confirm → PR</span>
+</header>
+<p class="site-boundary" role="note">
+  Crawlable guides for humans and AI systems. Interactive disclosures also live on
+  <a href="../#guides">the home app</a>.
+</p>
+<main id="main">
+<section class="section" aria-labelledby="title">
+  <h1 id="title">Guides</h1>
+  <p><strong>Ticket Flow</strong> is a free public method for running an IDE agent from ticket ID to PR with mandatory human gates. Use it after tickets exist; use the <a href="https://smg99.github.io/engineering-ai-playbook/">AI-Assisted SDLC Playbook</a> earlier in the lifecycle.</p>
+
+  <h2>What Ticket Flow is</h2>
+  <p>A thin orchestration layer: skill checklist, trigger rules, and script wrappers that call your existing git / issue / chat CLIs. Product standards stay in each app’s own rules. Ticket Flow only sequences <em>how</em> work moves from ID → merged change.</p>
+
+  <h2>Companion to the AI-Assisted SDLC Playbook</h2>
+  <ul>
+    <li><a href="https://smg99.github.io/engineering-ai-playbook/#guide-review-md">Review markdown before tickets</a></li>
+    <li><a href="https://smg99.github.io/engineering-ai-playbook/#stage/develop">Develop one story</a> — trigger Ticket Flow phrases here</li>
+  </ul>
+
+  <h2>Install into a product repo</h2>
+  <ol>
+    <li>Copy <code>.cursor/skills/</code> and <code>.cursor/rules/</code> into the app (or multi-root this repo).</li>
+    <li>Configure <code>scripts/</code> for tracker and chat; unconfigured wrappers fail loudly.</li>
+    <li>Keep client tickets and code out of this public repository.</li>
+  </ol>
+  <p>Detail: <a href="../start/">Quick start</a> · Source: <a href="https://github.com/smg99/ticket-flow">github.com/smg99/ticket-flow</a></p>
+
+  <h2>Script wrappers and failures</h2>
+  <ul>
+    <li>Unconfigured <code>issue-get.sh</code> / <code>notify-chat.sh</code> exit non-zero with instructions.</li>
+    <li><code>git-branch.sh</code> refuses a dirty tree and reuses an existing ticket branch if present.</li>
+    <li><code>git-push.sh</code> blocks direct push to <code>main</code>/<code>master</code>.</li>
+    <li><code>git-pr.sh</code> seeds an Impact Area body (or accepts a body file).</li>
+  </ul>
+
+  <h2>Security boundary</h2>
+  <p>This repository and site are public. Keep real tickets, source, credentials, and proprietary designs in approved private systems. Use synthetic examples only.</p>
+
+  <h2>Glossary</h2>
+  <dl class="glossary">
+    <dt>Primary app</dt><dd>The main product repository only.</dd>
+    <dt>Product suite</dt><dd>Primary app plus sibling product repos in the same family.</dd>
+    <dt>Suite + shared UI</dt><dd>Those products plus the shared UI package. Shared UI is not “the app” and not “the suite.”</dd>
+    <dt>Confirm</dt><dd>Explicit human approval at a gate. Silence never counts.</dd>
+    <dt>Impact Area</dt><dd>Pasteable handoff: App, Surfaces, Components/APIs, Regression Risk, Tests.</dd>
+  </dl>
+
+  <h2 id="faq">FAQ</h2>
+  <h3>What is Ticket Flow?</h3>
+  <p>A thin orchestration layer—skill, rules, and scripts—that sequences ticket ID → merged change with human Confirm gates. Not a product platform.</p>
+  <h3>How does it relate to the AI-Assisted SDLC Playbook?</h3>
+  <p>The playbook owns stage prompts from vague requirements through release. Ticket Flow owns the IDE checklist once a real ticket ID exists, especially during Develop one story.</p>
+  <h3>Does this site create PRs?</h3>
+  <p>No. It only displays guidance. PRs happen in your local clone via configured scripts and your code host after Confirm.</p>
+  <h3>Why two Confirm gates?</h3>
+  <p>One before commit (diff + Impact Area) and one before push/PR (title + body). Silence never counts as Confirm.</p>
+  <h3>What is an Impact Area?</h3>
+  <p>A pasteable handoff block: App, Surfaces, Components/APIs, Regression Risk, and Tests—used at validation and in PR descriptions.</p>
+  <h3>What if issue-get is not configured?</h3>
+  <p>The script must fail. Do not invent ticket descriptions; wire your tracker CLI and re-run.</p>
+
+  <p class="bridge"><a href="../#library">Open interactive flow</a> · <a href="../llm.txt">llm.txt</a> · <a href="../llms-full.txt">llms-full.txt</a></p>
+</section>
+</main>
+<footer>
+  <p>
+    <a href="../">Ticket Flow</a> ·
+    <a href="https://github.com/smg99/ticket-flow">GitHub</a> ·
+    <a href="../start/">Quick start</a> ·
+    <a href="../LICENSE">MIT</a>
+  </p>
+</footer>
+</body>
+</html>

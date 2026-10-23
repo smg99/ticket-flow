@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quick start | Ticket Flow</title>
+<meta name="description" content="Install Ticket Flow in 30 minutes: copy Cursor skill and rules, configure script wrappers, create a local progress board, then run work on ticket PROJ-123.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://smg99.github.io/ticket-flow/start/">
+<link rel="alternate" type="text/plain" href="https://smg99.github.io/ticket-flow/llms.txt" title="llms.txt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quick start | Ticket Flow">
+<meta property="og:description" content="Copy skill and rules, wire scripts, initialize progress.md, then trigger the agent with a ticket ID.">
+<meta property="og:url" content="https://smg99.github.io/ticket-flow/start/">
+<meta property="og:image" content="https://smg99.github.io/ticket-flow/assets/og-cover.png">
+<link rel="stylesheet" href="../assets/styles.css?v=tf2">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Install Ticket Flow",
+  "description": "Wire the Ticket Flow skill, rules, and scripts into a product repository.",
+  "step": [
+    {"@type": "HowToStep", "name": "Copy skill and rules", "text": "Copy .cursor/skills/ticket-flow/ and .cursor/rules/*.mdc into the product repo."},
+    {"@type": "HowToStep", "name": "Configure scripts", "text": "Edit scripts/ so issue-get and notify-chat call your CLIs; unconfigured scripts must exit with an error."},
+    {"@type": "HowToStep", "name": "Progress board", "text": "Copy docs/progress-template.md to .local/progress.md."},
+    {"@type": "HowToStep", "name": "Run a ticket", "text": "In chat say work on ticket PROJ-123 and expect Confirm gates before commit and PR."}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <a class="brand" href="../">Ticket Flow</a>
+  <nav aria-label="Main navigation">
+    <a href="../">Flow</a>
+    <a href="./" aria-current="page">Quick start</a>
+    <a href="../guides/">Guides</a>
+  </nav>
+  <span class="header-note">Ticket → Confirm → PR</span>
+</header>
+<p class="site-boundary" role="note">
+  Public install guide. Companion to the
+  <a href="https://smg99.github.io/engineering-ai-playbook/">AI-Assisted SDLC Playbook</a>.
+  Prefer the <a href="../#start">interactive quick start</a> for step-by-step UI.
+</p>
+<main id="main">
+<section class="section" aria-labelledby="title">
+  <h1 id="title">Quick start</h1>
+  <p>Thirty minutes to wire Ticket Flow into a team. Ticket Flow is a thin IDE agent checklist from a real ticket ID to a pull request with human Confirm gates—not a hosted platform.</p>
+
+  <h2>1. Copy skill and rules</h2>
+  <p>Copy <code>.cursor/skills/ticket-flow/</code> and <code>.cursor/rules/*.mdc</code> into your product repo’s <code>.cursor/</code> directory, or open this repository as a multi-root workspace.</p>
+  <ul>
+    <li><strong>Skill</strong> — the checklist the agent follows.</li>
+    <li><strong>ticket-flow.mdc</strong> — routes trigger phrases to the skill.</li>
+    <li><strong>ticket-handoff.mdc</strong> — Impact Area + tests on handoff/PR.</li>
+  </ul>
+
+  <h2>2. Configure scripts</h2>
+  <p>Edit wrappers under <code>scripts/</code>. Unconfigured scripts <strong>exit with an error</strong>—they never invent ticket text or claim a chat send succeeded.</p>
+  <ul>
+    <li><code>issue-get.sh</code> → Jira / Linear / <code>gh issue view</code></li>
+    <li><code>git-branch.sh</code>, <code>git-commit.sh</code>, <code>git-push.sh</code>, <code>git-pr.sh</code></li>
+    <li><code>notify-chat.sh</code> → webhook or chat CLI (channel required)</li>
+  </ul>
+
+  <h2>3. Progress board</h2>
+  <p>Copy <code>docs/progress-template.md</code> to <code>.local/progress.md</code> (gitignored) for morning multi-ticket queues.</p>
+
+  <h2>4. Run a ticket</h2>
+  <p>In Cursor chat, say:</p>
+  <pre class="prompt">work on ticket PROJ-123</pre>
+  <p>Also works: <code>fix bug PROJ-123</code> / <code>process morning queue</code>. Expect Confirm before commit and before PR. Silence is not Confirm.</p>
+  <p>Vague requirements first? Use the <a href="https://smg99.github.io/engineering-ai-playbook/#guide-review-md">playbook review-markdown</a>, then return for <a href="https://smg99.github.io/engineering-ai-playbook/#stage/develop">Develop one story</a> with Ticket Flow.</p>
+
+  <p class="bridge"><a class="primary" href="../#library" style="text-decoration:none;display:inline-block">Open interactive flow</a></p>
+</section>
+</main>
+<footer>
+  <p>
+    <a href="../">Ticket Flow</a> ·
+    <a href="https://github.com/smg99/ticket-flow">GitHub</a> ·
+    <a href="../guides/">Guides</a> ·
+    <a href="../LICENSE">MIT</a>
+  </p>
+</footer>
+</body>
+</html>

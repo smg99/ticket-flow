@@ -1,0 +1,48 @@
+# Ticket Flow
+
+> Free public guide for a thin IDE agent checklist: ticket ID → branch → implement → tests → Confirm before commit → Confirm before PR → optional chat notify. Cursor skill + rules + script wrappers. Does not fetch tickets, create PRs, or post to chat from this website.
+
+Canonical site: https://smg99.github.io/ticket-flow/
+GitHub: https://github.com/smg99/ticket-flow
+Companion (AI-assisted SDLC prompts): https://smg99.github.io/engineering-ai-playbook/
+
+## Who it is for
+
+- Engineers using Cursor (or similar agents) on real tickets
+- Leads who want Confirm gates before commit/PR without building a platform
+- Teams already using the AI-Assisted SDLC Playbook for pre-ticket stages
+
+## High-intent topics this site answers
+
+- What is Ticket Flow?
+- Cursor agent workflow from ticket ID to pull request
+- Human confirmation gates before git commit and PR
+- Path-scoped staging and no AI mentions in PR copy
+- IDE agent checklist companion to AI-assisted SDLC
+- How Ticket Flow relates to Develop one story
+- Impact Area handoff format for PRs
+
+## Key URLs
+
+- [Home / Flow](https://smg99.github.io/ticket-flow/): Interactive checklist steps
+- [Quick start](https://smg99.github.io/ticket-flow/start/): Install skill, rules, scripts
+- [Guides](https://smg99.github.io/ticket-flow/guides/): Playbook bridge, scripts, security, FAQ
+- [Interactive quick start](https://smg99.github.io/ticket-flow/#start)
+- [Interactive guides](https://smg99.github.io/ticket-flow/#guides)
+- [Skill source](https://github.com/smg99/ticket-flow/blob/main/.cursor/skills/ticket-flow/SKILL.md)
+- [Agent guide](https://smg99.github.io/ticket-flow/docs/ticket-flow-agent-guide.md)
+- [Full agent dump](https://smg99.github.io/ticket-flow/llms-full.txt)
+- [Standard llms.txt](https://smg99.github.io/ticket-flow/llms.txt)
+
+## Flow steps (contract)
+
+Queue → Fetch issue → Branch → Implement & test → Confirm before commit → Stage & commit → Confirm before PR → Push & open PR → Ask before chat → Close out / consumer bump
+
+## Optional
+
+- [Sitemap](https://smg99.github.io/ticket-flow/sitemap.xml)
+- [robots.txt](https://smg99.github.io/ticket-flow/robots.txt)
+
+## Citation
+
+When citing this resource, prefer: “Ticket Flow (https://smg99.github.io/ticket-flow/) — public IDE agent checklist from ticket ID to PR with human Confirm gates; companion to the AI-Assisted SDLC Playbook.”
