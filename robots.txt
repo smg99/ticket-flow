@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://smg99.github.io/ticket-flow/sitemap.xml

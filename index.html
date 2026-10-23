@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticket Flow | Ticket ID → merged change with human gates</title>
+<meta name="description" content="Ticket Flow is a thin Cursor agent checklist: fetch issue, branch, implement with tests, Confirm before commit and PR, then optional chat notify. Companion to the AI-Assisted SDLC Playbook.">
+<meta name="keywords" content="Ticket Flow, Cursor agent workflow, ticket to PR, human confirmation gates, IDE agent checklist, AI-assisted SDLC companion">
+<meta name="author" content="Ticket Flow contributors">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://smg99.github.io/ticket-flow/">
+<link rel="alternate" type="text/plain" href="https://smg99.github.io/ticket-flow/llms.txt" title="llms.txt">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ticket Flow">
+<meta property="og:title" content="Ticket Flow | Ticket ID → merged change with human gates">
+<meta property="og:description" content="Repeatable IDE agent checklist from ticket ID to PR: Confirm gates, path-scoped staging, tests required, ask before chat.">
+<meta property="og:url" content="https://smg99.github.io/ticket-flow/">
+<meta property="og:image" content="https://smg99.github.io/ticket-flow/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ticket Flow">
+<meta name="twitter:description" content="Ticket ID → branch → implement → tests → Confirm → PR. Companion to the AI-Assisted SDLC Playbook.">
+<meta name="twitter:image" content="https://smg99.github.io/ticket-flow/assets/og-cover.png">
+<link rel="stylesheet" href="assets/styles.css?v=tf1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://smg99.github.io/ticket-flow/#website",
+      "name": "Ticket Flow",
+      "url": "https://smg99.github.io/ticket-flow/",
+      "description": "Public guide for a thin IDE agent checklist from ticket ID to merged change with human gates.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Ticket Flow",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://smg99.github.io/ticket-flow/",
+      "description": "Cursor skill, rules, and thin scripts that sequence ticket work with Confirm gates."
+    },
+    {
+      "@type": "HowTo",
+      "name": "Run Ticket Flow from ticket ID to PR",
+      "description": "Fetch the issue, branch, implement with tests, Confirm before commit and PR, optionally notify chat.",
+      "step": [
+        { "@type": "HowToStep", "name": "Queue", "text": "Record the ticket on a local progress board." },
+        { "@type": "HowToStep", "name": "Fetch issue", "text": "Load real ticket content from your tracker." },
+        { "@type": "HowToStep", "name": "Branch", "text": "Create bugfix/ID or feature/ID from latest main." },
+        { "@type": "HowToStep", "name": "Implement and test", "text": "Change code with tests; reproduce UI bugs in the app." },
+        { "@type": "HowToStep", "name": "Confirm and ship", "text": "Human Confirm before commit and before PR; ask before chat." }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Ticket Flow?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ticket Flow is a thin orchestration layer—Cursor skill, rules, and script wrappers—that sequences how an IDE agent moves from a ticket ID to a merged change with human Confirm gates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Ticket Flow relate to the AI-Assisted SDLC Playbook?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The playbook covers vague requirements through release prompts and gates. Ticket Flow starts after a real ticket exists and sequences IDE agent work for Develop one story."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this site run my agent or create PRs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This site only displays guidance and copyable prompts. Install the skill/rules in your workspace and run scripts locally against your repos."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <a class="brand" href="#library">Ticket Flow</a>
+  <nav aria-label="Main navigation">
+    <a href="#library">Flow</a>
+    <a href="#start">Quick start</a>
+    <a href="#guides">Guides</a>
+  </nav>
+  <span class="header-note">Ticket → Confirm → PR</span>
+</header>
+<p class="site-boundary" role="note">
+  Public guide only. Install the skill in your IDE; this site never fetches tickets, commits code, or posts to chat.
+  Companion to the <a href="https://smg99.github.io/engineering-ai-playbook/">AI-Assisted SDLC Playbook</a>.
+</p>
+<main id="main">
+
+<section id="start" class="section" aria-labelledby="start-title" hidden>
+  <h1 id="start-title">Quick start</h1>
+  <p>Thirty minutes to wire Ticket Flow into a team. Prefer the <a href="#library">Flow</a> view once you know the steps.</p>
+  <nav id="lesson-nav" aria-label="Setup steps"></nav>
+  <p id="lesson-status" class="helper" role="status"></p>
+
+  <article class="lesson-step" id="setup-copy">
+    <h3>1. Copy skill and rules</h3>
+    <div>
+      <p>Copy <code>.cursor/skills/ticket-flow/</code> and <code>.cursor/rules/*.mdc</code> into your product repo’s <code>.cursor/</code> directory (or open this repo as a multi-root workspace).</p>
+      <ul>
+        <li><strong>Skill</strong> — the checklist the agent follows.</li>
+        <li><strong>ticket-flow.mdc</strong> — routes trigger phrases to the skill.</li>
+        <li><strong>ticket-handoff.mdc</strong> — Impact Area + tests on handoff/PR.</li>
+      </ul>
+      <p><strong>Next:</strong> wire the thin script wrappers to your CLIs.</p>
+    </div>
+  </article>
+
+  <article class="lesson-step" id="setup-scripts" hidden>
+    <h3>2. Configure scripts</h3>
+    <div>
+      <p>Edit wrappers under <code>scripts/</code> so they call your tools. Unconfigured scripts <strong>exit with an error</strong> — they never invent ticket text or claim a chat send succeeded.</p>
+      <ul>
+        <li><code>issue-get.sh</code> → Jira / Linear / <code>gh issue view</code></li>
+        <li><code>git-branch.sh</code>, <code>git-commit.sh</code>, <code>git-push.sh</code>, <code>git-pr.sh</code></li>
+        <li><code>notify-chat.sh</code> → webhook or chat CLI (channel required)</li>
+      </ul>
+      <p><strong>Next:</strong> initialize a private progress board.</p>
+    </div>
+  </article>
+
+  <article class="lesson-step" id="setup-progress" hidden>
+    <h3>3. Progress board</h3>
+    <div>
+      <p>Copy <code>docs/progress-template.md</code> to <code>.local/progress.md</code> (gitignored). Use it for morning multi-ticket queues.</p>
+      <p><strong>Next:</strong> try a phrase that loads the skill.</p>
+    </div>
+  </article>
+
+  <article class="lesson-step" id="setup-run" hidden>
+    <h3>4. Run a ticket</h3>
+    <div>
+      <p>In Cursor chat, say something like:</p>
+      <pre class="prompt">work on ticket PROJ-123</pre>
+      <p>or <code>fix bug PROJ-123</code> / <code>process morning queue</code>. Expect Confirm gates before commit and before PR.</p>
+      <p>Vague requirements first? Use the <a href="https://smg99.github.io/engineering-ai-playbook/#guide-review-md">playbook review-markdown</a> before tickets exist, then return here for <a href="https://smg99.github.io/engineering-ai-playbook/#stage/develop">Develop one story</a>.</p>
+    </div>
+  </article>
+
+  <div class="lesson-controls">
+    <button type="button" id="previous-step">Previous</button>
+    <button type="button" class="primary" id="next-step">Next step</button>
+  </div>
+</section>
+
+<section id="library" class="section" aria-labelledby="library-title">
+  <div class="flow-heading">
+    <div>
+      <h1 id="library-title" tabindex="-1">Where are you starting?</h1>
+      <p id="flow-intro">Choose what you already have. Start there, then work through one step at a time.</p>
+      <p class="seo-lead">Ticket Flow sequences <strong>how</strong> an IDE agent moves from a real ticket ID to a PR—with human Confirm gates—without becoming a platform.</p>
+    </div>
+    <button type="button" id="change-entry" hidden>Change starting point</button>
+  </div>
+
+  <div class="review-md-home" id="hard-rules-home">
+    <h2>Hard rules</h2>
+    <p>These stay on even if the agent only partially loads the skill.</p>
+    <ol id="hard-rules-list"></ol>
+  </div>
+
+  <div class="review-md-home">
+    <h2>Impact Area template</h2>
+    <p>Paste into validation gates and PR bodies. Copy before you open the PR.</p>
+    <div class="prompt-bar">
+      <button type="button" class="copy" data-copy-source="impact-area-text">Copy Impact Area</button>
+    </div>
+    <pre class="prompt" id="impact-area-text"></pre>
+  </div>
+
+  <div id="entry-choices" class="entry-choices">
+    <button type="button" data-entry="0"><strong>Morning queue</strong><span>Several ticket IDs to work serially</span></button>
+    <button type="button" data-entry="1"><strong>One ticket ID</strong><span>Fetch issue and classify bug vs feature</span></button>
+    <button type="button" data-entry="3"><strong>Already branched</strong><span>Implement, test, then Confirm gates</span></button>
+  </div>
+
+  <div id="stage-picker">
+    <label for="stage-select">Or choose your current step</label>
+    <select id="stage-select"><option value="">Select a step…</option></select>
+  </div>
+
+  <div id="stage-workspace" class="stage-workspace" hidden>
+    <nav id="stage-list" aria-label="Ticket Flow steps"></nav>
+    <div id="stage-detail"></div>
+  </div>
+
+  <p class="bridge">
+    Before tickets exist, use the
+    <a href="https://smg99.github.io/engineering-ai-playbook/">AI-Assisted SDLC Playbook</a>.
+    During implementation, pair with
+    <a href="https://smg99.github.io/engineering-ai-playbook/#stage/develop">Develop one story</a>.
+  </p>
+
+  <figure class="flow-boundary">
+    <img src="docs/assets/agent-chat-vs-ticket-flow-cost.png" alt="Ad-hoc agent chat versus Ticket Flow cost comparison" width="1200" height="auto" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid var(--line)">
+    <figcaption class="helper">Fewer retries when the path and gates are fixed up front.</figcaption>
+  </figure>
+</section>
+
+<section id="guides" class="section" aria-labelledby="guides-title" hidden>
+  <h1 id="guides-title">Guides</h1>
+  <p>Team setup, boundaries, and how this fits the SDLC playbook. Markdown sources also live in the repository.</p>
+
+  <details id="guide-install" open>
+    <summary>Install into a product repo</summary>
+    <div>
+      <p>Ticket Flow is meant to be copied or multi-rooted into the apps you change—not run as a SaaS.</p>
+      <ol>
+        <li>Copy <code>.cursor/skills/</code> and <code>.cursor/rules/</code> into the app (or keep this repo in a multi-root workspace).</li>
+        <li>Point or copy <code>scripts/</code> where the agent can execute them; configure tracker and chat CLIs.</li>
+        <li>Keep product standards in each app’s own rules; Ticket Flow only sequences ticket → PR.</li>
+      </ol>
+      <p>Source repo: <a href="https://github.com/smg99/ticket-flow">github.com/smg99/ticket-flow</a></p>
+    </div>
+  </details>
+
+  <details id="guide-playbook">
+    <summary>Companion to the AI-Assisted SDLC Playbook</summary>
+    <div>
+      <p>The playbook owns stage prompts from vague requirements through release. Ticket Flow owns the IDE checklist once a <strong>real ticket ID</strong> exists.</p>
+      <ul>
+        <li><a href="https://smg99.github.io/engineering-ai-playbook/#guide-review-md">Review markdown before tickets</a></li>
+        <li><a href="https://smg99.github.io/engineering-ai-playbook/#stage/develop">Develop one story</a> — use Ticket Flow phrases here</li>
+      </ul>
+    </div>
+  </details>
+
+  <details id="guide-scripts">
+    <summary>Script wrappers and failures</summary>
+    <div>
+      <p>Wrappers forward to existing CLIs. They must not reimplement tracker or chat business logic.</p>
+      <ul>
+        <li>Unconfigured <code>issue-get.sh</code> / <code>notify-chat.sh</code> exit non-zero with instructions.</li>
+        <li><code>git-branch.sh</code> refuses a dirty tree and reuses an existing ticket branch if present.</li>
+        <li><code>git-push.sh</code> blocks direct push to <code>main</code>/<code>master</code>.</li>
+        <li><code>git-pr.sh</code> seeds an Impact Area body (or accepts a body file).</li>
+      </ul>
+      <p>On failure: report the error envelope, offer recovery, do not invent success.</p>
+    </div>
+  </details>
+
+  <details id="guide-security">
+    <summary>What not to put in this repo</summary>
+    <div>
+      <p>This repository and site are public. Keep real tickets, code, credentials, and proprietary designs in approved private systems. Use synthetic examples only.</p>
+    </div>
+  </details>
+
+  <div id="glossary">
+    <h2>Glossary</h2>
+    <dl class="glossary" id="glossary-dl"></dl>
+  </div>
+
+  <div id="faq">
+    <h2>FAQ</h2>
+    <details>
+      <summary>What is Ticket Flow?</summary>
+      <div><p>A thin orchestration layer—skill, rules, and scripts—that sequences ticket ID → merged change with human Confirm gates. Not a product platform.</p></div>
+    </details>
+    <details>
+      <summary>Does this site create PRs?</summary>
+      <div><p>No. It only displays guidance. PRs happen in your local clone via configured scripts and your code host.</p></div>
+    </details>
+    <details>
+      <summary>Why two Confirm gates?</summary>
+      <div><p>One before commit (diff + Impact Area) and one before push/PR (title + body). Silence never counts as Confirm.</p></div>
+    </details>
+  </div>
+</section>
+
+</main>
+<p id="copy-status" class="sr-only" role="status" aria-live="polite"></p>
+<footer>
+  <p>
+    Ticket Flow ·
+    <a href="https://github.com/smg99/ticket-flow">GitHub</a> ·
+    <a href="https://smg99.github.io/engineering-ai-playbook/">AI-Assisted SDLC Playbook</a> ·
+    <a href="LICENSE">MIT</a>
+  </p>
+</footer>
+<script src="assets/flow-data.js?v=tf1"></script>
+<script src="assets/app.js?v=tf1"></script>
+</body>
+</html>

@@ -2,6 +2,8 @@
 
 Use this file to queue and track active tickets locally. This file is gitignored (`.local/progress.md`) so your morning workqueue remains private.
 
+Use only `[ ]` (todo) and `[x]` (done) checkboxes.
+
 ## Queue
 
 - [ ] PROJ-101: Fix payment gateway timeout error
@@ -16,11 +18,12 @@ Use this file to queue and track active tickets locally. This file is gitignored
 - **Steps:**
   - [x] Fetch issue description
   - [x] Branch from main
-  - [/] Implement fix
+  - [ ] Implement fix
   - [ ] Add regression tests
-  - [ ] Human validation gate (Confirm)
-  - [ ] Commit & Push
-  - [ ] Open Pull Request
+  - [ ] Human validation gate (Confirm commit)
+  - [ ] Commit
+  - [ ] Human validation gate (Confirm PR)
+  - [ ] Push & open Pull Request
   - [ ] Chat notification
 
 ## Done

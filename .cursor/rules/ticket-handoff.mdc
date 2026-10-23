@@ -1,7 +1,6 @@
 ---
-description: Prompts the developer or agent to provide the standard Impact Area and ensures tests are included before handoff.
-globs: *
-alwaysApply: false
+description: When handing off a ticket, validating changes, or writing a PR description, require Impact Area format and tests (or an explicit waiver).
+alwaysApply: true
 ---
 
 # Ticket Handoff & Impact Area Rule
@@ -13,6 +12,7 @@ When preparing to hand off a ticket, validate changes, or present a pull request
    - **Surfaces:** (Which pages, paths, or API flows are affected)
    - **Components / APIs:** (Specific classes, functions, or UI elements changed)
    - **Regression Risk:** (Low/Med/High with reasoning)
+   - **Tests:** (Paths added/updated, or "waived by user")
 
 2. **Verify Tests:**
    - Assert that corresponding test files have been created or updated.

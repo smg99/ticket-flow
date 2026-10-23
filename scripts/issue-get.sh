@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # issue-get.sh - Fetch ticket details from tracker CLI (e.g. Jira, Linear, GitHub Issues)
 # Usage: ./scripts/issue-get.sh <TICKET_ID>
+#
+# Configure by uncommenting ONE implementation below and removing the CONFIGURE ME block.
 
 set -euo pipefail
 
@@ -11,18 +13,32 @@ if [ -z "$TICKET_ID" ]; then
   exit 1
 fi
 
-echo "=== Fetching Issue: $TICKET_ID ==="
+echo "=== Fetching Issue: $TICKET_ID ===" >&2
 
-# Example GitHub Issues implementation:
-# gh issue view "$TICKET_ID" --json title,body,state,labels
+# --- GitHub Issues ---
+# if command -v gh >/dev/null 2>&1; then
+#   gh issue view "$TICKET_ID" --json number,title,body,state,labels
+#   exit 0
+# fi
 
-# Example Linear implementation:
-# linear issue:show "$TICKET_ID"
+# --- Linear (requires linear CLI) ---
+# if command -v linear >/dev/null 2>&1; then
+#   linear issue:show "$TICKET_ID"
+#   exit 0
+# fi
 
-# Placeholder implementation:
-echo "Status: IN_PROGRESS"
-echo "Title: Example issue description for $TICKET_ID"
-echo "Description: As a developer, I want a standardized way to fetch ticket info so that my Cursor agent can understand the context automatically."
-echo "Acceptance Criteria:"
-echo "1. Script runs successfully with a ticket ID."
-echo "2. Script outputs mock description that can be parsed."
+# --- Jira (requires jira CLI) ---
+# if command -v jira >/dev/null 2>&1; then
+#   jira issue view "$TICKET_ID"
+#   exit 0
+# fi
+
+cat >&2 <<'EOF'
+Error: issue-get.sh is not configured for your tracker.
+
+Edit scripts/issue-get.sh and enable one CLI integration (gh / linear / jira),
+or replace this script with a wrapper that prints title, body, state, and acceptance criteria.
+
+Do not invent ticket content. Wire the tracker, then re-run.
+EOF
+exit 2

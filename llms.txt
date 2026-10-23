@@ -1,0 +1,29 @@
+# Ticket Flow
+
+> Thin IDE agent checklist: ticket ID → branch → implement → tests → Confirm → PR → optional chat.
+
+Live site: https://smg99.github.io/ticket-flow/
+Repository: https://github.com/smg99/ticket-flow
+Companion playbook: https://smg99.github.io/engineering-ai-playbook/
+
+## Start
+
+- Flow UI: https://smg99.github.io/ticket-flow/#library
+- Quick start: https://smg99.github.io/ticket-flow/#start
+- Guides: https://smg99.github.io/ticket-flow/#guides
+- Skill source: .cursor/skills/ticket-flow/SKILL.md
+
+## Hard rules
+
+1. Confirm before every commit and before every PR. Silence is not Confirm.
+2. No AI/Cursor/agent mentions in commits or PR copy.
+3. Path-scoped staging only.
+4. Reproduce UI bugs in the running app.
+5. Tests ship with the change unless waived.
+6. Ask before chat notify; never invent a channel.
+7. Never force-push protected defaults; never push secrets.
+8. On script failure, report errors—do not invent success.
+
+## Boundaries
+
+This public site never fetches tickets, runs agents, or posts to chat. Install the skill/rules locally. Keep client context out of this repository.

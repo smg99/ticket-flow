@@ -1,12 +1,13 @@
-# Ticket Flow Agent
+# Ticket Flow
 
-This repository contains the Ticket Flow agent workflow configurations, rules, scripts, and documentation. It is designed to establish a repeatable, high-discipline workflow for Cursor (and other agentic IDEs) inside your development team.
+A repeatable, high-discipline workflow for Cursor (and similar IDE agents): fetch issue → branch → implement → tests → **Confirm** → commit → **Confirm** → PR → ask before chat.
 
-**Companion SDLC method:** [AI-Assisted SDLC Playbook](https://smg99.github.io/engineering-ai-playbook/) — stage prompts and human gates from vague requirements through release ([Develop one story](https://smg99.github.io/engineering-ai-playbook/#stage/develop), [review markdown before tickets](https://smg99.github.io/engineering-ai-playbook/#guide-review-md)). This repo does not replace that playbook; it sequences *how* an IDE agent runs once a real ticket exists.
+**Live site:** [https://smg99.github.io/ticket-flow/](https://smg99.github.io/ticket-flow/)  
+**Companion SDLC method:** [AI-Assisted SDLC Playbook](https://smg99.github.io/engineering-ai-playbook/) — stage prompts from vague requirements through release. This repo sequences *how* an IDE agent runs once a **real ticket** exists ([Develop one story](https://smg99.github.io/engineering-ai-playbook/#stage/develop)).
 
 ## Overview
 
-**Ticket Flow** is a thin orchestration layer, not a product. It sequences *how* work moves from ticket ID → merged change with human gates at the right moments.
+**Ticket Flow** is a thin orchestration layer, not a product.
 
 ```text
 User phrase  →  rule loads skill  →  scripts + product repos  →  Confirm  →  commit/PR  →  ask before chat
@@ -14,7 +15,7 @@ User phrase  →  rule loads skill  →  scripts + product repos  →  Confirm  
 
 ### Why use a structured workflow?
 
-Ad-hoc chat ("plan then build ticket X") often burns retries: wrong branch, forgotten tests, premature commit, or Slack spam. A Ticket Flow skill front-loads the path once, reducing loops and tokens.
+Ad-hoc chat ("plan then build ticket X") often burns retries: wrong branch, forgotten tests, premature commit, or Slack spam. A Ticket Flow skill front-loads the path once.
 
 #### Ad-Hoc Agent Chat vs. Ticket Flow Cost
 ![Ad-hoc agent chat vs ticket-flow cost](docs/assets/agent-chat-vs-ticket-flow-cost.png)
@@ -28,38 +29,41 @@ Ad-hoc chat ("plan then build ticket X") often burns retries: wrong branch, forg
 
 ```text
 ticket-flow/
-├── README.md                   # Setup, overview and diagrams (this file)
-├── .gitignore                  # Local progress tracker gitignore
+├── index.html                  # Public GitHub Pages site
+├── assets/                     # Site CSS, JS, OG image
+├── README.md
+├── LICENSE                     # MIT
 ├── .cursor/
-│   ├── skills/
-│   │   └── ticket-flow/
-│   │       └── SKILL.md        # The step-by-step checklist the agent follows
+│   ├── skills/ticket-flow/SKILL.md
 │   └── rules/
-│       ├── ticket-flow.mdc     # Rule that triggers the Ticket Flow skill
-│       └── ticket-handoff.mdc  # Standard format for ticket handoff and tests
+│       ├── ticket-flow.mdc
+│       └── ticket-handoff.mdc
 ├── docs/
-│   ├── ticket-flow-agent-guide.md   # Detailed team developer guide
-│   ├── progress-template.md         # Template for morning multi-ticket queues
-│   └── assets/                      # Guide diagrams and visual assets
-└── scripts/                         # Wrapper scripts forwarding to your CLI tools
-    ├── issue-get.sh                 # Fetch ticket description
-    ├── git-branch.sh                # Create scoped branch
-    ├── git-commit.sh                # Standardized commits
-    ├── git-push.sh                  # Push code
-    ├── git-pr.sh                    # Open pull request
-    └── notify-chat.sh               # Post update to chat
+│   ├── ticket-flow-agent-guide.md
+│   ├── progress-template.md
+│   ├── CONTRIBUTING.md
+│   └── assets/
+└── scripts/                    # Thin CLI wrappers (fail loud until configured)
 ```
 
-## Quick Start (30-Minute Team Setup)
+## Quick Start
 
-1. **Copy Rules to App Root (Optional):**
-   If you want these rules to apply to the main app repository, copy `.cursor/rules/*.mdc` and `.cursor/skills/` to the root `.cursor` directory of your project repository, or configure your editor to point to this directory.
-   
-2. **Configure Script Wrappers:**
-   Customize the helper scripts in `scripts/` to integrate with your project's issue tracker (e.g., Jira, Linear, GitHub Issues) and chat server (e.g., Slack, Discord, MS Teams).
+1. Visit the **[live guide](https://smg99.github.io/ticket-flow/)** (or open `index.html` locally).
+2. Copy `.cursor/rules/*.mdc` and `.cursor/skills/` into your product repo (or multi-root this repo).
+3. Configure `scripts/` for your issue tracker and chat — unconfigured scripts **error**; they do not invent data.
+4. Copy `docs/progress-template.md` → `.local/progress.md` (gitignored).
+5. In chat: `work on ticket PROJ-123`.
 
-3. **Initialize the Progress Board:**
-   Copy `docs/progress-template.md` to `.local/progress.md` (which is already in the `.gitignore`) to track your daily active tickets locally without cluttering Git logs.
+## Discoverability
 
-4. **Detailed Guide:**
-   Read the full guide in [ticket-flow-agent-guide.md](docs/ticket-flow-agent-guide.md) to understand the workflow theory, glossary, and rules.
+- Site: [index.html](https://smg99.github.io/ticket-flow/)
+- AI context: [llms.txt](https://smg99.github.io/ticket-flow/llms.txt)
+- Crawlers: [robots.txt](https://smg99.github.io/ticket-flow/robots.txt) · [sitemap.xml](https://smg99.github.io/ticket-flow/sitemap.xml)
+
+## Hosting
+
+GitHub Pages publishes the repository root from `main`. `.nojekyll` disables Jekyll processing. No build step, framework, or backend.
+
+## License
+
+[MIT](LICENSE)

@@ -1,6 +1,8 @@
 # Ticket Flow Agent — Fast-track guide for developers
 
-A practical pattern for turning “work this ticket” into a repeatable Cursor agent workflow: fetch the issue, branch, implement with tests, stop for a human **Confirm**, then commit, open a PR, and optionally notify chat — without building a platform.
+A practical pattern for turning “work this ticket” into a repeatable Cursor agent workflow: fetch the issue, branch, implement with tests, stop for human **Confirm** gates (before commit and before PR), then optionally notify chat — without building a platform.
+
+**Live site:** [https://smg99.github.io/ticket-flow/](https://smg99.github.io/ticket-flow/)
 
 Share this with other eng teams that want the same discipline in their own repos and trackers.
 
@@ -13,7 +15,7 @@ Share this with other eng teams that want the same discipline in their own repos
 | Piece | Role |
 |-------|------|
 | **Cursor skill** (`SKILL.md`) | The checklist: steps, gates, wording, branch naming |
-| **Always-on rule** (`.mdc`) | Routes trigger phrases to that skill so the agent does not freestyle |
+| **Always-applied rule** (`.mdc`) | Routes trigger phrases to that skill so the agent does not freestyle |
 | **Thin script wrappers** | Call existing git / issue-tracker / chat CLIs — no duplicated business logic |
 | **Human gates** | Mandatory stop before commit/PR ship and before chat notify |
 | **Local progress board** | Gitignored markdown queue for morning multi-ticket runs |
@@ -61,9 +63,9 @@ One `SKILL.md` with:
 - Numbered checklist the agent copies and ticks
 - Stop-and-wait table for every human gate
 
-### Always-on rule triggers
+### Always-applied rule triggers
 
-A short always-applied rule that says: when the user uses those phrases, **load and follow** the skill. Keep naming glossary and “never skip Confirm” in the rule so even a partial skill load stays safe.
+A short `alwaysApply: true` rule that says: when the user uses those phrases, **load and follow** the skill at `.cursor/skills/ticket-flow/SKILL.md`. Keep naming glossary and “never skip Confirm” in the rule so even a partial skill load stays safe.
 
 Optional companion rule for handoff: pasteable **Impact Area** + “tests required with the change.”
 
@@ -78,7 +80,7 @@ Prefer `scripts/` in a workflow repo (or monorepo tooling folder) that forward t
 | Commit / push / PR | thin forwards to your git host CLI |
 | Chat notify | webhook or MCP — **only after explicit yes + channel** |
 
-Do not reimplement pack/CLI logic inside the skill. On script failure: report the error envelope, offer documented recovery options, do not invent workarounds.
+Do not reimplement pack/CLI logic inside the skill. Unconfigured wrappers must **exit non-zero** (no fake ticket text, no “notification sent” lies). On script failure: report the error envelope, offer documented recovery options, do not invent workarounds.
 
 ### Progress board (local, gitignored)
 
@@ -158,11 +160,16 @@ Never treat silence as Confirm.
 - Stage **only** ticket-relevant product/test paths
 - No secrets; no local-only helpers unless the user explicitly asks
 
-### 6. Push, PR, ask before chat
+### 6. Confirm before PR (STOP)
 
-- Push and open PR vs `main` (or your default base)
+- Show proposed PR title, Impact Area body, test plan, and base branch
+- Wait for explicit **Confirm**. Never treat silence as Confirm.
+
+### 7. Push, PR, ask before chat
+
+- Push and open PR vs `main` (or your default base) using `git-pr.sh` (Impact Area body template)
 - PR title/description: human summary + test plan; **never** mention AI, Cursor, agents, or automation tooling
-- After PR URL is known: **STOP** — ask whether to post to chat (**Yes/No**) **and which channel/group** (multi-choice if known, else free text). Show the proposed message. Post only after channel chosen + explicit yes. If notify fails, still offer copy-paste text when they opt in.
+- After PR URL is known: **STOP** — ask whether to post to chat (**Yes/No**) **and which channel/group** (multi-choice if known, else free text). Never invent a default channel. Show the proposed message. Post only after channel chosen + explicit yes. If notify fails or is unconfigured, still offer copy-paste text when they opt in.
 
 Example chat shape:
 
@@ -170,7 +177,7 @@ Example chat shape:
 HI Devs - Can you please review this PR? <PR_URL> about <ISSUE_URL>
 ```
 
-### 7. Consumer package bump (if needed)
+### 8. Consumer package bump (if needed)
 
 When the change landed in a shared package:
 
@@ -180,7 +187,7 @@ When the change landed in a shared package:
 4. Update tests if needed
 5. Same **Confirm** → commit → push → PR → ask chat again
 
-### 8. Close out
+### 9. Close out
 
 - Mark **Done** on the progress board
 - Start the next queued ticket or ask the user
@@ -189,7 +196,7 @@ When the change landed in a shared package:
 
 ## 6. Hard rules
 
-1. **Confirm before every commit and every PR that ships code.** Prefer choice UI for yes/no gates; else chat text.
+1. **Confirm before every commit and before every PR.** Prefer choice UI for yes/no gates; else chat text. Silence is never Confirm.
 2. **No AI / agent / Cursor mentions in PR titles or descriptions.**
 3. **Stage only ticket-relevant files.** Leave unstaged: seed/sample scripts, one-off validate/measure harnesses, local tarball pins, personal notes, unrelated WIP. Prefer path-scoped staging over `git add -A`.
 4. **Reproduce UI bugs in the running app** before calling the fix done — do not rely only on the ticket wording.
