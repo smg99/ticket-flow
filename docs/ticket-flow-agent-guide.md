@@ -84,7 +84,7 @@ Do not reimplement pack/CLI logic inside the skill. Unconfigured wrappers must *
 
 ### Progress board (local, gitignored)
 
-Copy a template → `.local/progress.md` (or similar). Update as tickets move In progress → Done. Enough for a morning queue without a dashboard.
+Copy a template → `.local/progress.md` (or similar). Update as tickets move `queued` → `in_progress` → `awaiting_review` (then `merged` / `done` only when observed or the product DoD is met). Opening a PR is **not** Done. Enough for a morning queue without a dashboard. See `docs/execution-evidence.md`.
 
 ---
 
@@ -118,14 +118,14 @@ Process **one ticket at a time** unless the user asks otherwise.
 - Pull summary, description, type, status, acceptance criteria
 - Classify **bug** vs **feature** (issue type + user wording; “fix bug” → bugfix)
 
-### 2. Branch from latest main
+### 2. Branch from configured base
 
 | Classification | Branch |
 |----------------|--------|
 | Bug | `bugfix/PROJ-123` |
 | Feature / story / task | `feature/PROJ-123` |
 
-Prefer the primary change surface first (often the shared UI package). Do not branch unrelated dirty repos.
+Resolve base via product config, `TICKET_FLOW_BASE`, or an explicit third arg to `git-branch.sh` — do not assume every repo uses `main`. Prefer the primary change surface first (often the shared UI package). Do not branch unrelated dirty repos.
 
 ### 3. Implement + tests
 
@@ -167,9 +167,11 @@ Never treat silence as Confirm.
 
 ### 7. Push, PR, ask before chat
 
-- Push and open PR vs `main` (or your default base) using `git-pr.sh` (Impact Area body template)
+- Push, then open PR with a **complete** title and body:
+  `./scripts/git-pr.sh --title "PROJ-123: <summary>" --body-file <path> --base <branch>`
+  (optional `--dry-run` to validate). The script refuses placeholder titles and blank Impact Area fields; it never claims a PR was created on failure.
 - PR title/description: human summary + test plan; **never** mention AI, Cursor, agents, or automation tooling
-- After PR URL is known: **STOP** — ask whether to post to chat (**Yes/No**) **and which channel/group** (multi-choice if known, else free text). Never invent a default channel. Show the proposed message. Post only after channel chosen + explicit yes. If notify fails or is unconfigured, still offer copy-paste text when they opt in.
+- After PR URL is known: set local progress to **awaiting_review** (not Done). Then **STOP** — ask whether to post to chat (**Yes/No**) **and which channel/group** (multi-choice if known, else free text). Never invent a default channel. Show the proposed message. Post only after channel chosen + explicit yes. If notify fails or is unconfigured, still offer copy-paste text when they opt in.
 
 Example chat shape:
 
@@ -189,7 +191,8 @@ When the change landed in a shared package:
 
 ### 9. Close out
 
-- Mark **Done** on the progress board
+- Set local status to **awaiting_review** with PR URL + next action after PR open
+- Set **merged** only when merge is observed; set **done** only when the product’s definition of done is met (often QA accepted / released)—never solely because a PR opened
 - Start the next queued ticket or ask the user
 
 ---

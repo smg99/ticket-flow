@@ -30,29 +30,34 @@ Ad-hoc chat ("plan then build ticket X") often burns retries: wrong branch, forg
 ```text
 ticket-flow/
 ├── index.html                  # Public GitHub Pages site
+├── AGENTS.md                   # Agent entrypoint (gates, scripts, skills)
+├── skills/ticket-flow/SKILL.md # Canonical portable skill
 ├── assets/                     # Site CSS, JS, OG image
 ├── README.md
 ├── LICENSE                     # MIT
 ├── .cursor/
-│   ├── skills/ticket-flow/SKILL.md
+│   ├── skills/ticket-flow/SKILL.md  # Symlink/copy → skills/
 │   └── rules/
 │       ├── ticket-flow.mdc
 │       └── ticket-handoff.mdc
 ├── docs/
 │   ├── ticket-flow-agent-guide.md
 │   ├── progress-template.md
+│   ├── execution-evidence.md
 │   ├── CONTRIBUTING.md
 │   └── assets/
-└── scripts/                    # Thin CLI wrappers (fail loud until configured)
+├── scripts/                    # Thin CLI wrappers (fail loud until configured)
+└── tests/run.sh                # Wrapper regression tests (no credentials)
 ```
 
 ## Quick Start
 
 1. Visit the **[live guide](https://smg99.github.io/ticket-flow/)** (or open `index.html` locally).
-2. Copy `.cursor/rules/*.mdc` and `.cursor/skills/` into your product repo (or multi-root this repo).
+2. Copy `skills/ticket-flow/`, `.cursor/rules/*.mdc`, and the Cursor skill adapter (`.cursor/skills/`) into your product repo (or multi-root this repo). See `AGENTS.md`.
 3. Configure `scripts/` for your issue tracker and chat — unconfigured scripts **error**; they do not invent data.
-4. Copy `docs/progress-template.md` → `.local/progress.md` (gitignored).
+4. Copy `docs/progress-template.md` → `.local/progress.md` (gitignored). After PR open, status is `awaiting_review`—not `done`.
 5. In chat: `work on ticket PROJ-123`.
+6. Optional: `./tests/run.sh` to verify wrapper failure paths locally.
 
 ## Discoverability
 
