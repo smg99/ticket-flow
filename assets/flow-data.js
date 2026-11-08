@@ -134,7 +134,7 @@ const flowStages = [
     prompts: [
       {
         title: 'Push and create PR',
-        text: 'Run ./scripts/git-push.sh then ./scripts/git-pr.sh (pass a body file if prepared). Show the PR URL. On script failure, report the error and stop—do not invent a PR.'
+        text: 'Run ./scripts/git-push.sh then ./scripts/git-pr.sh --title "[TICKET_ID]: [summary]" --body-file [path] --base [branch] (optional --dry-run first). Title and Impact Area body must be complete—script refuses placeholders. Show the PR URL. On script failure or missing gh, report the error and stop—do not invent a PR. Set progress to awaiting_review with the PR URL.'
       }
     ]
   },
@@ -160,15 +160,16 @@ const flowStages = [
     title: 'Close out / consumer bump',
     when: 'PR is open (and optional chat done).',
     input: 'Progress board; whether a shared package needs a consumer bump.',
-    output: 'Ticket marked Done; next ticket asked—or consumer bump loop started.',
+    output: 'Ticket marked awaiting_review (not done); next ticket asked—or consumer bump after merge/publish clarity.',
     gate: [
-      'Progress board updated to Done for this ticket.',
-      'If shared package changed: consumer bump uses the same branch name and Confirm gates.'
+      'Progress board status is awaiting_review with PR URL recorded—not Done solely because a PR opened.',
+      'If shared package changed: wait for merge/publish clarity; consumer bump uses the same branch name and Confirm gates.',
+      'merged/done only when observed or product DoD is met—never guessed.'
     ],
     prompts: [
       {
         title: 'Close or bump consumers',
-        text: 'Mark [TICKET_ID] Done in .local/progress.md. If a shared package changed, wait for merge/publish clarity, then in each consumer: same bugfix|feature/[TICKET_ID], bump dependency, tests, Confirm→commit→Confirm→PR→ask chat. Otherwise ask for the next queued ticket.'
+        text: 'Set [TICKET_ID] to awaiting_review in .local/progress.md (include PR URL + next action). Do not mark done because the PR opened. If a shared package changed, wait for merge/publish clarity, then in each consumer: same bugfix|feature/[TICKET_ID], bump dependency, tests, Confirm→commit→Confirm→PR→ask chat. Otherwise ask for the next queued ticket.'
       }
     ]
   }
@@ -183,7 +184,8 @@ const hardRules = [
   'Tests ship with the change unless the user explicitly waives them.',
   'Ask before chat notify; never invent a default channel.',
   'Never force-push protected defaults; never push secrets.',
-  'On script failure: report the error—do not invent workarounds or fake success.'
+  'On script failure: report the error—do not invent workarounds or fake success.',
+  'After PR open: local status awaiting_review—not done. Tracker Done follows product DoD.'
 ];
 
 const impactAreaTemplate = `## Impact Area

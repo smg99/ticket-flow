@@ -43,9 +43,9 @@ Ticket Flow is a free, public, thin orchestration layer for IDE agents (especial
 5. Confirm before commit — Impact Area summary; wait for explicit Confirm
 6. Stage & commit — `./scripts/git-commit.sh "ID: why-message"`
 7. Confirm before PR — title + Impact Area body + test plan
-8. Push & PR — `./scripts/git-push.sh` then `./scripts/git-pr.sh`
+8. Push & PR — `./scripts/git-push.sh` then `./scripts/git-pr.sh --title "…" --body-file … --base …` (refuses placeholders; optional --dry-run)
 9. Ask before chat — Yes/No + channel; `./scripts/notify-chat.sh` only if configured
-10. Close out — mark Done; optional consumer package bump with the same gates
+10. Close out — local status awaiting_review after PR open (not done); optional consumer package bump with the same gates after merge/publish clarity
 
 ## Impact Area template
 
@@ -67,11 +67,15 @@ Public site and repo: generic guidance and synthetic examples only. Real tickets
 
 ## Docs map
 
+- AGENTS.md — agent entrypoint
 - docs/ticket-flow-agent-guide.md — full team guide
 - docs/progress-template.md — local queue template
+- docs/execution-evidence.md — lean resume evidence fields
 - docs/CONTRIBUTING.md — how to extend
-- .cursor/skills/ticket-flow/SKILL.md — agent checklist
+- skills/ticket-flow/SKILL.md — canonical agent checklist
+- .cursor/skills/ticket-flow/SKILL.md — Cursor adapter (symlink/copy)
 - assets/flow-data.js — site step copy (keep aligned with the skill)
+- tests/run.sh — wrapper regression tests
 
 ## How to cite
 
